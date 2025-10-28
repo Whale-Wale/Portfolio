@@ -1,0 +1,220 @@
+﻿@model PortfolioWebApp.ViewModels.PortfolioViewModel
+
+<div class="container mt-5">
+
+    <!-- 🧍 Giới thiệu -->
+    <section class="mb-5 text-center fade-section">
+        <h1 class="fw-bold text-primary">@(Model.About?.FullName ?? "Chưa có thông tin")</h1>
+        <h4 class="text-muted">@Model.About?.JobTitle</h4>
+
+        @if (Model.About != null)
+        {
+            <img src="@Model.About.ImageUrl" alt="Ảnh đại diện"
+                 class="rounded-circle shadow my-3 border border-3 border-light"
+                 style="width: 150px; height:150px; object-fit:cover;" />
+            <p class="lead text-secondary mt-3">@Model.About.Description</p>
+            <div class="mt-3">
+                @if (!string.IsNullOrEmpty(Model.About.LinkedInUrl))
+                {
+                    <a href="@Model.About.LinkedInUrl" class="btn btn-outline-primary btn-sm mx-1" target="_blank">
+                        <i class="bi bi-linkedin"></i> LinkedIn
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.About.GithubUrl))
+                {
+                    <a href="@Model.About.GithubUrl" class="btn btn-outline-dark btn-sm mx-1" target="_blank">
+                        <i class="bi bi-github"></i> GitHub
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.About.CVUrl))
+                {
+                    <a href="@Model.About.CVUrl" class="btn btn-outline-success btn-sm mx-1" target="_blank">
+                        <i class="bi bi-file-earmark-text"></i> Tải CV
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">Chưa có thông tin giới thiệu.</p>
+        }
+    </section>
+
+    <hr />
+
+    <!-- 💻 Kỹ năng -->
+    <section class="mb-5 fade-section">
+        <h2 class="text-center mb-4 text-info fw-semibold">💻 Kỹ năng</h2>
+
+        @if (Model.Skills.Any())
+        {
+            <div class="row">
+                @foreach (var s in Model.Skills)
+                {
+                    <div class="col-md-6 mb-3">
+                        <strong>@s.Name (@s.Type)</strong>
+                        <div class="progress my-2" style="height: 18px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-gradient"
+                                 role="progressbar"
+                                 style="width:@s.Percentage%; background: linear-gradient(90deg, #4facfe, #00f2fe);"
+                                 aria-valuenow="@s.Percentage" aria-valuemin="0" aria-valuemax="100">
+                                @s.Percentage%
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted text-center">Chưa có kỹ năng nào.</p>
+        }
+    </section>
+
+    <hr />
+
+    <!-- 🎯 Sở thích -->
+    <section class="mb-5 fade-section">
+        <h2 class="text-center mb-4 text-warning fw-semibold">🎯 Sở thích</h2>
+        @if (Model.Hobbies.Any())
+        {
+            <div class="row text-center">
+                @foreach (var h in Model.Hobbies)
+                {
+                    <div class="col-md-3 mb-3">
+                        <div class="p-3 rounded-4 shadow-sm hobby-card">
+                            <i class="@h.IconClass fa-2x mb-2 text-warning"></i>
+                            <p class="fw-medium text-secondary">@h.Name</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted text-center">Chưa có sở thích nào.</p>
+        }
+    </section>
+
+    <hr />
+
+    <!-- 🧱 Dự án -->
+    <section class="mb-5 fade-section">
+        <h2 class="text-center mb-4 text-success fw-semibold">🧱 Dự án nổi bật</h2>
+
+        @if (Model.Projects.Any())
+        {
+            <div class="row">
+                @foreach (var p in Model.Projects)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-lg border-0 rounded-4 project-card h-100">
+                            @if (!string.IsNullOrEmpty(p.ImageUrl))
+                            {
+                                <img src="@p.ImageUrl" class="card-img-top rounded-top-4" alt="@p.Title"
+                                     style="height:200px; object-fit:cover;" />
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold text-success">@p.Title</h5>
+                                <p class="card-text text-muted">@p.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted text-center">Chưa có dự án nào để hiển thị.</p>
+        }
+    </section>
+
+    <hr />
+
+    <!-- 📞 Liên hệ -->
+    <section class="text-center fade-section mb-5">
+        <h2 class="text-danger fw-semibold mb-3">📞 Liên hệ</h2>
+        @if (Model.Contact != null)
+        {
+            <p><strong>Email:</strong> <a href="mailto:@Model.Contact.Email" class="text-decoration-none">@Model.Contact.Email</a></p>
+            <p><strong>Điện thoại:</strong> @Model.Contact.Phone</p>
+            <p><strong>Địa chỉ:</strong> @Model.Contact.Address</p>
+        }
+        else
+        {
+            <p class="text-muted">Chưa có thông tin liên hệ.</p>
+        }
+    </section>
+</div>
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #e8f0ff, #f9fcff);
+            color: #2c3e50;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        h1, h2, h4 {
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .fade-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-in-out;
+        }
+
+            .fade-section.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        .hobby-card {
+            background-color: #fffaf3;
+            transition: 0.3s ease;
+        }
+
+            .hobby-card:hover {
+                background-color: #fff3cd;
+                transform: translateY(-5px);
+            }
+
+        .project-card {
+            transition: all 0.3s ease-in-out;
+        }
+
+            .project-card:hover {
+                transform: scale(1.03);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+        .bg-gradient {
+            background: linear-gradient(90deg, #4facfe, #00f2fe) !important;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #a8b6ff, transparent);
+            margin: 3rem 0;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // 👇 Fade-in khi cuộn + khi tải trang
+        function reveal() {
+            document.querySelectorAll('.fade-section').forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    section.classList.add('show');
+                }
+            });
+        }
+
+        document.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
+    </script>
+}
